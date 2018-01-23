@@ -1,4 +1,8 @@
+var products = new Products();
+
 $(document).ready(function(){
+
+  products.renderFeatured('.featured');
 
     $(".menu_aside_active").parent().find(".menu_aside_under").slideDown(400);
 
