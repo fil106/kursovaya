@@ -4,13 +4,21 @@
     {"id": "1", "name": "Home", "href": "index.html"},
     {"id": "2", "name": "Product page", "href": "html/product.html",
       "megamenu":
-      {
-        "block": "Woman",
-        "items":
-        [
-          {"id": "6", "name": "Single page", "href": "html/single-page.html"}
-        ]
-      }
+      [
+        {"head": "Woman",
+          "items":
+          [
+            {"id": "6", "name": "Single page", "href": "html/single-page.html"}
+          ]
+        },
+        {"head": "Man",
+          "items":
+          [
+            {"id": "7", "name": "Single page", "href": "html/single-page.html"},
+            {"id": "8", "name": "Single page", "href": "html/single-page.html"}
+          ]
+        }
+      ]
     },
     {"id": "3", "name": "Single page", "href": "html/single-page.html"},
     {"id": "4", "name": "Shopping card", "href": "html/shopping-page.html"},

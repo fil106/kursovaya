@@ -4,8 +4,10 @@ function Menu(page) {
   this.currPage = page;
   this.dataPath = ''; this.getDataPath();
   this.items = []; this.collectItems();
+  this.megaMenuItems = [];
 }
 
+/** Выводим меню в место, которое передаем в аргументе **/
 Menu.prototype.render = function (place) {
   var container = $('<div />', {class: 'container'});
   var ul = $('<ul />', {class: "header_menu"});
@@ -18,6 +20,7 @@ Menu.prototype.render = function (place) {
   container.appendTo($(place));
 };
 
+/** Элемент меню **/
 Menu.prototype.singleItem = function (item) {
   var li = $('<li />');
   var a = $('<a />', {
@@ -37,14 +40,17 @@ Menu.prototype.singleItem = function (item) {
   /** Если есть подменю, то начинаем его генерировать рекурсивной функцией **/
   if(item.hasOwnProperty('megamenu')) {
     li.addClass('show_megamenu');
-    li.append(this.megaMenu());
+    li.append(this.megaMenu(item.megamenu));
   }
 
   return li;
 };
 
+/**** MEGA MENU ****/
 /** Метод megaMenu это не subMenu! нужен для отрисовки красивого большого меню **/
-Menu.prototype.megaMenu = function () {
+Menu.prototype.megaMenu = function (item) {
+  this.megaMenuItems = item;
+
   var megamenu = $('<div />', {
     class: 'megamenu'
   });
@@ -55,7 +61,9 @@ Menu.prototype.megaMenu = function () {
     class: 'header_menu_under'
   });
 
-
+  for(var i=0; i<item.length; i++) {
+    headerMenuUnder.append(this.megaMenuBlock(item[i]));
+  }
 
   arrowUp.appendTo(megamenu);
   headerMenuUnder.appendTo(megamenu);
@@ -63,12 +71,40 @@ Menu.prototype.megaMenu = function () {
   return megamenu;
 };
 
-Menu.prototype.megaMenuItem = function () {
-  var item = $('<div />', {
+Menu.prototype.megaMenuBlock = function (item) {
+  var block = $('<div />', {
     class: 'header_menu_item'
   });
+  var h4 = $('<h4 />', {
+    text: item.head
+  });
+  var ul = $('<ul />', {
+    class: 'header_menu_list'
+  });
 
-  return item;
+  h4.appendTo(block);
+
+  for(var i=0; i<item.items.length; i++) {
+    ul.append(this.megaMenuItem(item.items[i]));
+  }
+
+  ul.appendTo(block);
+
+  return block;
+};
+
+Menu.prototype.megaMenuItem = function (item) {
+  console.log('Элементы меню',item);
+
+  var li = $('<li />');
+  var a = $('<a />', {
+    href: this.dataPath + item.href,
+    text: item.name
+  });
+
+  a.appendTo(li);
+
+  return li;
 };
 
 Menu.prototype.getDataPath = function () {
