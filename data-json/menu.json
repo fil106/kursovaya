@@ -1,10 +1,19 @@
 {
   "items":
   [
-    {"id": "1", "name": "Home"},
-    {"id": "2", "name": "Product page"},
-    {"id": "3", "name": "Single page"},
-    {"id": "4", "name": "Shopping card"},
-    {"id": "5", "name": "Checkout"}
+    {"id": "1", "name": "Home", "href": "index.html"},
+    {"id": "2", "name": "Product page", "href": "html/product.html",
+      "megamenu":
+      {
+        "block": "Woman",
+        "items":
+        [
+          {"id": "6", "name": "Single page", "href": "html/single-page.html"}
+        ]
+      }
+    },
+    {"id": "3", "name": "Single page", "href": "html/single-page.html"},
+    {"id": "4", "name": "Shopping card", "href": "html/shopping-page.html"},
+    {"id": "5", "name": "Checkout", "href": "html/checkout.html"}
   ]
 }

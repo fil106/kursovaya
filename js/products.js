@@ -1,12 +1,14 @@
-/** Class products for all product **/
+/** Класс Products - глабольный класс для получения данных о товорах из JSON
+ ** и вывода товаров на определенных страницах и местах **/
 function Products(page) {
   this.currPage = page;
   this.dataPath = ''; this.getDataPath();
   this.products = []; this.collectProducts();
 }
 
-/** Method renderFeatured render Featured block with products (most of orders) **/
-Products.prototype.renderProducts = function (type, place) {
+/** Метод render помещает сгенерированные блоки в место переданное 2-м аргументом
+ ** и в зависимости от типа (популярные ли это товары или обычный каталог) **/
+Products.prototype.render = function (type, place) {
 
   if(type === 'featured') {
 
@@ -19,7 +21,7 @@ Products.prototype.renderProducts = function (type, place) {
     var itemsFeatured = $('<div />', {class: 'items_featured'});
     var browseAllProducts = '<a href="#" class="btn_allproduct hvr-float-shadow">Browse All Product <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>';
 
-    /** Limit no more than 8 elements in block featured **/
+    /** Изначально выводим неболее 8 товаров в популярные товары **/
     var lenFeatured = (this.products.length > 8) ? 8 : this.products.length;
     for(var i=0; i < lenFeatured; i++) {
       itemsFeatured.append(this.singleProduct(this.products[i], type));
@@ -36,7 +38,7 @@ Products.prototype.renderProducts = function (type, place) {
 
     console.log(type,this.products);
 
-    /** Limit no more than 9 elements in block catalog items **/
+    /** Изначально выводим неболее 9 товаров в блок каталога товаров **/
     var lenCatalog = (this.products.length > 9) ? 9 : this.products.length;
     for(var j=0; j < lenCatalog; j++) {
       $(place).append(this.singleProduct(this.products[j], type));
@@ -47,11 +49,11 @@ Products.prototype.renderProducts = function (type, place) {
 
 };
 
-/** Method singleProduct return html code with only one product **/
+/** Метод singleProduct возвращает HTML только одного элемента товара **/
 Products.prototype.singleProduct = function (item, type) {
   var cost = '$' + item.cost;
 
-  /** Generate blocks **/
+  /** Генерируем необходимые блоки HTML **/
   var article = $('<article />');
   var header = $('<header />');
   var upset = $('<div />', {class: 'upset'});
@@ -77,7 +79,7 @@ Products.prototype.singleProduct = function (item, type) {
     text: Number.cost ? cost + '.00' : cost
   });
 
-  /** Create a structure **/
+  /** Перемещаем елементы согласно структуре HTML **/
   price.appendTo(footer);
   headerProduct.appendTo(figcaption);
   img.appendTo(itemPhoto);
@@ -92,19 +94,20 @@ Products.prototype.singleProduct = function (item, type) {
   return article;
 };
 
+/** Метод для получения начала пути к нашим файлам, либо из корня, либо на каталог выше **/
 Products.prototype.getDataPath = function () {
   if(this.currPage === 'index.html' || this.currPage === '') {
     this.dataPath = './';
   } else {
     this.dataPath = '../';
   }
-  console.log('DataPath',this.dataPath);
+  console.log('DataPathContent',this.dataPath);
 };
 
-/** Method collectProducts get data from json **/
+/** Метод collectProducts получает и записывает, полученные данные из json **/
 Products.prototype.collectProducts = function () {
   $.ajax({
-    // method: 'GET' by default
+    // method: 'GET' по уиолчанию
     url: this.dataPath + 'data-json/products.json',
     dataType: 'json',
     async: false,

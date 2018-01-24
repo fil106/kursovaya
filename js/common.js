@@ -1,19 +1,23 @@
 
+/** Смотрим текущую страницу и далее передаем её в класс, где она обработается
+ ** и вернет нам либо корневой каталог, либо на каталог выше **/
 var loc = document.location.href.split('/');
 var currPage = loc[loc.length-1];
 console.log('текущая страница:',loc,currPage);
 
 $(document).ready(function(){
+  var topMenu = new Menu(currPage);
+  topMenu.render('.nav_header');
 
   if(currPage === 'product.html') {
 
     var products = new Products(currPage);
-    products.renderProducts('catalog', '.items_catalog');
+    products.render('catalog', '.items_catalog');
 
   } else if(currPage === 'index.html' || currPage === '') {
 
     var products = new Products(currPage);
-    products.renderProducts('featured', '.featured');
+    products.render('featured', '.featured');
 
   }
 
