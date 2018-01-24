@@ -1,0 +1,10 @@
+{
+  "items":
+  [
+    {"id": "1", "name": "Home"},
+    {"id": "2", "name": "Product page"},
+    {"id": "3", "name": "Single page"},
+    {"id": "4", "name": "Shopping card"},
+    {"id": "5", "name": "Checkout"}
+  ]
+}
