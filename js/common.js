@@ -94,5 +94,5 @@ $(document).ready(function(){
   });
 
   /** DRAG & DROP **/
-  $('.items_featured article').draggable({ scroll: false });npm -
+  $('.items_featured article').draggable({ scroll: false });
 });
