@@ -6,6 +6,8 @@ var currPage = loc[loc.length-1];
 console.log('текущая страница:',loc,currPage);
 
 $(document).ready(function(){
+  this.itemCost = new ItemCost();
+
   var topMenu = new Menu(currPage);
   topMenu.render('.nav_header');
 
@@ -24,16 +26,16 @@ $(document).ready(function(){
   $(".menu_aside_active").parent().find(".menu_aside_under").slideDown(400);
 
 
-  // *** выпадающее меню ***
+  /** выпадающее меню ***/
   $(".sort_by_select").click(function(){
 
   var sel = $(this);
   var selDown = $(this).find(".sort_by_select_down");
 
-  // показываем/скрываем выпадающее меню
+  /** показываем/скрываем выпадающее меню **/
   selDown.slideToggle(200);
 
-  // если курсор мыши вне выпадающего меню, то скрываем его
+  /** если курсор мыши вне выпадающего меню, то скрываем его **/
   $(".sort").mouseleave(function(){
       selDown.slideUp(200);
   });
@@ -43,7 +45,7 @@ $(document).ready(function(){
   })
 });
 
-  // *** выпадающее меню для боковой панели ***
+  /** выпадающее меню для боковой панели **/
   $(".menu_aside_click").click(function(){
       var active = $(this);
 
@@ -52,18 +54,18 @@ $(document).ready(function(){
       active.toggleClass("menu_aside_active");
   });
 
-  // *** выпадающее меnu для кнопки BROWSE ***
+  /** выпадающее меnu для кнопки BROWSE **/
   $(".select_search").click(function(){
      $(this).find(".browsemenu").slideToggle();
   });
 
-  // *** выпадающее меnu для корзины ***
+  /** выпадающее меnu для корзины **/
   if($(window).width() <= 1525) {
     $('.curr_card').css('right', '20px');
     $('.arrow_up').hide();
     $('.close_curr_card').show();
   }
-
+  // при ресайзе окна делаем некоторые манипуляции
   $(window).resize(function () {
     if($(window).width() <= 1525) {
       $('.curr_card').css('right', '20px');
@@ -77,6 +79,7 @@ $(document).ready(function(){
     }
   });
 
+  // при скроле вниз фиксируем карзину
   $(document).scroll(function () {
     if($(document).scrollTop() > 70) {
       $('.arrow_up').hide();
@@ -86,13 +89,121 @@ $(document).ready(function(){
   });
 
   $('.close_curr_card').click(function () {
-    $(this).parent().parent().find(".curr_card").slideToggle();
+    $(this).parent().parent().find(".curr_card").slideUp();
   });
 
   $(".profile_card").click(function(){
       $(this).parent().find(".curr_card").slideToggle();
   });
 
-  /** DRAG & DROP **/
-  $('.items_featured article').draggable({ scroll: false });
+  /** DRAG FEATURED GOODS **/
+  $('.items_featured article').draggable({
+    revert: true,
+    start: function () {
+      if($('.curr_card').css('display') === 'none') {
+        $('.curr_card').show('bounce');
+      }
+      $(this).css('z-index', '999999');
+    },
+    stop: function(){
+      $(this).css('z-index', '100');
+    }
+  });
+
+  $('.curr_card').on('click', '.delete_item', function () {
+    $(this).parent().parent().remove();
+
+    if($('.curr_card table tr').length <= '3') {
+      $('.curr_card table').css({
+        'display': 'table',
+        'height': 'auto',
+        'overflow': 'auto'
+      });
+    }
+  });
+
+  /** DROP IN CURR CARD **/
+  $('.curr_card').droppable({
+    drop: function( event, ui ) {
+      /** убираем надпись "MOVE HERE GOODS" **/
+      $(this).find('h3').remove();
+      /** добавляем в корзину драгнутый товар =) **/
+      $(this).find('table tbody').append(generateCardItem(ui));
+
+      if($('.curr_card table tr').length > '3') {
+        $('.curr_card table').css({
+          'display': 'block',
+          'height': '296px',
+          'overflow': 'auto'
+        });
+      }
+    }
+  });
+
 });
+
+function generateCardItem(ui) {
+  var drag = ui.draggable;
+  var imgBlk = drag.find('.photo');
+  var img = $('<img>', {
+    src: imgBlk.attr('src'),
+    alt: imgBlk.attr('alt'),
+    height: 69
+  });
+  var cost = drag.find('.price_featured').text();
+  var name = drag.find('h2').text();
+
+  var tr = $('<tr />');
+  var td1 = $('<td />', {
+    class: 'card_image'
+  });
+  var td2 = $('<td />');
+  var td3 = $('<td />');
+  var h4 = $('<h4 />', {
+    text: name
+  });
+  var div = $('<div />', {
+    class: 'curr_card_price',
+    text: '1 x ' + cost
+  });
+  var closeIcon = $('<i class="fa fa-times-circle delete_item" aria-hidden="true"></i>');
+
+  this.itemCost.setItemCost(cost);
+  this.itemCost.refreshTotalPrice('plus');
+
+  img.appendTo(td1);
+  h4.appendTo(td2);
+  div.appendTo(td2);
+  closeIcon.appendTo(td3);
+  td1.appendTo(tr);
+  td2.appendTo(tr);
+  td3.appendTo(tr);
+
+  return tr;
+}
+
+function ItemCost() {
+  this.cost = '';
+}
+
+ItemCost.prototype.setItemCost = function (cost) {
+  this.cost = cost;
+};
+
+ItemCost.prototype.refreshTotalPrice = function(operation) {
+  var result = parseFloat(this.cost.replace('$','')).toFixed(2);
+  var price = parseFloat($('.card_total_price').text().replace('$','')).toFixed(2);
+  console.log(result,price);
+
+  if(operation === 'plus') {
+
+    var totalPrice = (price * 100 + result * 100) / 100;
+    $('.card_total_price').text('$' + totalPrice);
+
+  } else if(operation === 'minus') {
+
+    var totalPrice = (price * 100 - result * 100) / 100;
+    $('.card_total_price').text('$' + totalPrice);
+
+  }
+};

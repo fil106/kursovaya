@@ -4,7 +4,6 @@ function Menu(page) {
   this.currPage = page;
   this.dataPath = ''; this.getDataPath();
   this.items = []; this.collectItems();
-  this.megaMenuItems = [];
 }
 
 /** Выводим меню в место, которое передаем в аргументе **/
