@@ -155,8 +155,7 @@ input, select, button {
 
 .profile {
     float: right;
-    position: relative;
-    top: 10px;
+    padding-top: 10px;
 }
 
 .profile > a > img {
@@ -224,15 +223,22 @@ input, select, button {
 }
 
 .profile .curr_card {
-    z-index: 11;
+    z-index: 999;
     padding: 10px;
-    width: 200%;
+    width: 345px;
+    top: 80px;
     display: none;
 }
 
 .profile .curr_card .arrow_up {
     top: -6px;
     left: 15px;
+}
+
+.profile .curr_card .close_curr_card {
+    display: none;
+    text-align: right;
+    font-size: 20px;
 }
 
 .profile_card {

@@ -1,0 +1,20 @@
+{
+  "name": "kursovaya",
+  "homepage": "https://github.com/fil106/kursovaya",
+  "authors": [
+    "Filipp <fil106@mail.ru>"
+  ],
+  "description": "Kersovoy poject",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery-ui": "^1.12.1"
+  }
+}

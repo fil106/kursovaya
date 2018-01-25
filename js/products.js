@@ -19,7 +19,7 @@ Products.prototype.render = function (type, place) {
       class: 'cap_featured'
     });
     var itemsFeatured = $('<div />', {class: 'items_featured'});
-    var browseAllProducts = '<a href="#" class="btn_allproduct hvr-float-shadow">Browse All Product <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>';
+    var browseAllProducts = '<a href="html/product.html" class="btn_allproduct hvr-float-shadow">Browse All Product <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>';
 
     /** Изначально выводим неболее 8 товаров в популярные товары **/
     var lenFeatured = (this.products.length > 8) ? 8 : this.products.length;

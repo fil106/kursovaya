@@ -29,9 +29,13 @@ Menu.prototype.singleItem = function (item) {
   });
 
   var active = item.href.replace('html/', '');
+  console.log('currPage=',this.currPage);
 
   /** Если совпала открытая страница в браузере и текущая, генерируемая ссылка **/
   if(this.currPage === active) {
+    a.addClass('active_item_menu');
+  }
+  if(this.currPage === '' && active === 'index.html') {
     a.addClass('active_item_menu');
   }
 

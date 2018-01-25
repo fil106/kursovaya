@@ -27,38 +27,72 @@ $(document).ready(function(){
   // *** выпадающее меню ***
   $(".sort_by_select").click(function(){
 
-    var sel = $(this);
-    var selDown = $(this).find(".sort_by_select_down");
+  var sel = $(this);
+  var selDown = $(this).find(".sort_by_select_down");
 
-    // показываем/скрываем выпадающее меню
-    selDown.slideToggle(200);
+  // показываем/скрываем выпадающее меню
+  selDown.slideToggle(200);
 
-    // если курсор мыши вне выпадающего меню, то скрываем его
-    $(".sort").mouseleave(function(){
-        selDown.slideUp(200);
-    });
-
-    $(".sort_by_select_down ul li").click(function(){
-        $(this).parent().parent().parent().find(".sort_by_select_current").text($(this).text());
-    })
+  // если курсор мыши вне выпадающего меню, то скрываем его
+  $(".sort").mouseleave(function(){
+      selDown.slideUp(200);
   });
 
-    // *** выпадающее меню для боковой панели ***
-    $(".menu_aside_click").click(function(){
-        var active = $(this);
+  $(".sort_by_select_down ul li").click(function(){
+      $(this).parent().parent().parent().find(".sort_by_select_current").text($(this).text());
+  })
+});
 
-        active.parent().find(".menu_aside_under").slideToggle(200);
-        active.find(".fa").toggleClass("fa-sort-asc fa-sort-desc");
-        active.toggleClass("menu_aside_active");
-    });
+  // *** выпадающее меню для боковой панели ***
+  $(".menu_aside_click").click(function(){
+      var active = $(this);
 
-    // *** выпадающее меnu для кнопки BROWSE ***
-    $(".select_search").click(function(){
-       $(this).find(".browsemenu").slideToggle();
-    });
+      active.parent().find(".menu_aside_under").slideToggle(200);
+      active.find(".fa").toggleClass("fa-sort-asc fa-sort-desc");
+      active.toggleClass("menu_aside_active");
+  });
 
-    // *** выпадающее меnu для корзины ***
-    $(".profile_card").click(function(){
-        $(this).parent().find(".curr_card").slideToggle();
-    });
+  // *** выпадающее меnu для кнопки BROWSE ***
+  $(".select_search").click(function(){
+     $(this).find(".browsemenu").slideToggle();
+  });
+
+  // *** выпадающее меnu для корзины ***
+  if($(window).width() <= 1525) {
+    $('.curr_card').css('right', '20px');
+    $('.arrow_up').hide();
+    $('.close_curr_card').show();
+  }
+
+  $(window).resize(function () {
+    if($(window).width() <= 1525) {
+      $('.curr_card').css('right', '20px');
+      $('.arrow_up').hide();
+      $('.close_curr_card').show();
+    }
+    if($(window).width() > 1525) {
+      $('.curr_card').css('right', '');
+      $('.arrow_up').show();
+      $('.close_curr_card').hide();
+    }
+  });
+
+  $(document).scroll(function () {
+    if($(document).scrollTop() > 70) {
+      $('.arrow_up').hide();
+      $('.close_curr_card').show();
+      $('.curr_card').css('position', 'fixed');
+    }
+  });
+
+  $('.close_curr_card').click(function () {
+    $(this).parent().parent().find(".curr_card").slideToggle();
+  });
+
+  $(".profile_card").click(function(){
+      $(this).parent().find(".curr_card").slideToggle();
+  });
+
+  /** DRAG & DROP **/
+  $('.items_featured article').draggable({ scroll: false });npm -
 });
