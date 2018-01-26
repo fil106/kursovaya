@@ -54,7 +54,10 @@ Products.prototype.singleProduct = function (item, type) {
   var cost = '$' + item.cost;
 
   /** Генерируем необходимые блоки HTML **/
-  var article = $('<article />');
+  var article = $('<article />', {
+    class: 'item',
+    'data-product-id': item.id
+  });
   var header = $('<header />');
   var upset = $('<div />', {class: 'upset'});
   var figure = $('<figure />');

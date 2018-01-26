@@ -6,7 +6,6 @@ var currPage = loc[loc.length-1];
 console.log('текущая страница:',loc,currPage);
 
 $(document).ready(function(){
-  this.itemCost = new ItemCost();
 
   var topMenu = new Menu(currPage);
   topMenu.render('.nav_header');
@@ -97,8 +96,9 @@ $(document).ready(function(){
   });
 
   /** DRAG FEATURED GOODS **/
-  $('.items_featured article').draggable({
+  $('.item').draggable({
     revert: true,
+    scroll: false,
     start: function () {
       if($('.curr_card').css('display') === 'none') {
         $('.curr_card').show('bounce');
@@ -111,6 +111,9 @@ $(document).ready(function(){
   });
 
   $('.curr_card').on('click', '.delete_item', function () {
+    var cost = $('.curr_card_price').text().replace('1 x ', '');
+    refreshTotalPrice(cost, 'minus');
+
     $(this).parent().parent().remove();
 
     if($('.curr_card table tr').length <= '3') {
@@ -144,66 +147,87 @@ $(document).ready(function(){
 
 function generateCardItem(ui) {
   var drag = ui.draggable;
-  var imgBlk = drag.find('.photo');
-  var img = $('<img>', {
-    src: imgBlk.attr('src'),
-    alt: imgBlk.attr('alt'),
-    height: 69
-  });
-  var cost = drag.find('.price_featured').text();
-  var name = drag.find('h2').text();
+  var dragId = drag.attr('data-product-id');
+  var basketItems = getBasketItems();
+  var compare = false;
 
-  var tr = $('<tr />');
-  var td1 = $('<td />', {
-    class: 'card_image'
-  });
-  var td2 = $('<td />');
-  var td3 = $('<td />');
-  var h4 = $('<h4 />', {
-    text: name
-  });
-  var div = $('<div />', {
-    class: 'curr_card_price',
-    text: '1 x ' + cost
-  });
-  var closeIcon = $('<i class="fa fa-times-circle delete_item" aria-hidden="true"></i>');
+  for(var i in basketItems) {
+    if(basketItems[i] === dragId) {
+      compare = true;
+    }
+  }
 
-  this.itemCost.setItemCost(cost);
-  this.itemCost.refreshTotalPrice('plus');
+  if(compare) {
+    /** Пока без увеличения количества товара **/
+  } else {
 
-  img.appendTo(td1);
-  h4.appendTo(td2);
-  div.appendTo(td2);
-  closeIcon.appendTo(td3);
-  td1.appendTo(tr);
-  td2.appendTo(tr);
-  td3.appendTo(tr);
+    var imgBlk = drag.find('.photo');
+    var img = $('<img>', {
+      src: imgBlk.attr('src'),
+      alt: imgBlk.attr('alt'),
+      height: 69
+    });
+    var cost = drag.find('.price_featured').text();
+    var name = drag.find('h2').text();
 
-  return tr;
+    var tr = $('<tr />', {'data-product-id': dragId});
+    var td1 = $('<td />', {
+      class: 'card_image'
+    });
+    var td2 = $('<td />');
+    var td3 = $('<td />');
+    var h4 = $('<h4 />', {
+      text: name
+    });
+    var div = $('<div />', {
+      class: 'curr_card_price',
+      text: '1 x ' + cost
+    });
+    var closeIcon = $('<i class="fa fa-times-circle delete_item" aria-hidden="true"></i>');
+
+    refreshTotalPrice(cost, 'plus');
+
+    img.appendTo(td1);
+    h4.appendTo(td2);
+    div.appendTo(td2);
+    closeIcon.appendTo(td3);
+    td1.appendTo(tr);
+    td2.appendTo(tr);
+    td3.appendTo(tr);
+
+    return tr;
+  }
 }
 
-function ItemCost() {
-  this.cost = '';
+function getBasketItems() {
+  var basketItems = $('.curr_card tr');
+
+  if(basketItems.length != 0) {
+    var arr = [];
+
+    for(var i=0; i<basketItems.length; i++) {
+      arr.push(basketItems[i].getAttribute('data-product-id'));
+      console.log(arr);
+    }
+  }
+
+  return arr;
+
 }
 
-ItemCost.prototype.setItemCost = function (cost) {
-  this.cost = cost;
-};
-
-ItemCost.prototype.refreshTotalPrice = function(operation) {
-  var result = parseFloat(this.cost.replace('$','')).toFixed(2);
+function refreshTotalPrice(cost, operation) {
+  var result = parseFloat(cost.replace('$','')).toFixed(2);
   var price = parseFloat($('.card_total_price').text().replace('$','')).toFixed(2);
-  console.log(result,price);
 
   if(operation === 'plus') {
 
     var totalPrice = (price * 100 + result * 100) / 100;
-    $('.card_total_price').text('$' + totalPrice);
+    $('.card_total_price').text(parseFloat(totalPrice).toFixed(2));
 
   } else if(operation === 'minus') {
 
     var totalPrice = (price * 100 - result * 100) / 100;
-    $('.card_total_price').text('$' + totalPrice);
+    $('.card_total_price').text(parseFloat(totalPrice).toFixed(2));
 
   }
 };
