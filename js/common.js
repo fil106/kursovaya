@@ -1,9 +1,10 @@
 /** Смотрим текущую страницу и далее передаем её в класс, где она обработается
- ** и вернет нам либо корневой каталог, либо на каталог выше **/
+ ** и вернет нам либо корневой каталог './', либо на каталог выше '../' **/
 var loc = document.location.href.split('/');
 var currPage = loc[loc.length-1];
 console.log('текущая страница:',loc,currPage);
 
+/** Далее все дейсвтия делаем только после полного построния DOM **/
 $(document).ready(function(){
   var topMenu = new Menu(currPage);
   topMenu.render('.nav_header');
