@@ -1,4 +1,5 @@
-function generateCardItem(ui) {
+/** Генерируем элемент корзины на основе того, что пользователь передвигал **/
+function generateBasketItem(ui) {
   /** ui - то, что пользователь начал двигать **/
   var drag = ui.draggable;
   var dragId = drag.attr('data-product-id');
@@ -11,6 +12,7 @@ function generateCardItem(ui) {
     }
   }
 
+  /** Если в корзине уже присутствует добавляемый товар, то ничего не делаем **/
   if(compare) {
     /** Пока без увеличения количества товара **/
   } else {
@@ -70,6 +72,7 @@ function getBasketItems() {
 
 }
 
+/** Метод для обновления текущей общей стоимости товаров в корзине **/
 function refreshTotalPrice(cost, operation) {
   var result = parseFloat(cost.replace('$','')).toFixed(2);
   var price = parseFloat($('.card_total_price').text().replace('$','')).toFixed(2);
