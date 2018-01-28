@@ -1,0 +1,10 @@
+{
+  "name": "kursovaya",
+  "version": "0.0.1",
+  "devDependencies": {
+    "browser-sync": "^2.23.6",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-concat-css": "^3.0.0"
+  }
+}
