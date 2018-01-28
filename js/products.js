@@ -110,7 +110,7 @@ Products.prototype.getDataPath = function () {
 /** Метод collectProducts получает и записывает, полученные данные из json **/
 Products.prototype.collectProducts = function () {
   $.ajax({
-    // method: 'GET' по уиолчанию
+    // method: 'GET' по умолчанию
     url: this.dataPath + 'data-json/products.json',
     dataType: 'json',
     async: false,

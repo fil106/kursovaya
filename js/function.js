@@ -1,4 +1,5 @@
 function generateCardItem(ui) {
+  /** ui - то, что пользователь начал двигать **/
   var drag = ui.draggable;
   var dragId = drag.attr('data-product-id');
   var basketItems = getBasketItems();
@@ -52,6 +53,7 @@ function generateCardItem(ui) {
   }
 }
 
+/** Возвращает массив текущих элементов корзины **/
 function getBasketItems() {
   var basketItems = $('.curr_card tr');
 
