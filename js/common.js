@@ -18,12 +18,12 @@ $(document).ready(function(){
 
   if(currPage === 'product.html' || currPage === 'product.html#') {
 
-    var products = new Products(currPage);
+    var products = new Products(currPage, 'item');
     products.render('catalog', '.items_catalog');
 
   } else if(currPage === 'index.html' || currPage === 'index.html#' || currPage === '') {
 
-    var products = new Products(currPage);
+    var products = new Products(currPage, 'item');
     products.render('featured', '.featured');
 
   }
@@ -135,7 +135,7 @@ $(document).ready(function(){
       /** убираем надпись "MOVE HERE GOODS" **/
       $(this).find('h3').remove();
       /** добавляем в корзину драгнутый товар =) **/
-      $(this).find('table tbody').append(generateBasketItem(ui));
+      $(this).find('table tbody').append(insertItemBasket(ui.draggable));
 
       if($('.curr_card table tr').length > '3') {
         $('.curr_card table').css({
@@ -145,5 +145,14 @@ $(document).ready(function(){
         });
       }
     }
+  });
+
+  /** ЛОВИМ КЛИК ПО ТОВАРУ И ДОБАВЛЯЕМ ЕГО В КОРЗИНУ **/
+  $('.item').click(function(e){
+    e.preventDefault();
+
+    $('.curr_card').show('bounce');
+
+    $('.curr_card table tbody').append(insertItemBasket($(this)));
   });
 });

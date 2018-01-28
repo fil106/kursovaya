@@ -1,9 +1,10 @@
 /** Класс Products - глабольный класс для получения данных о товорах из JSON
  ** и вывода товаров на определенных страницах и местах **/
-function Products(page) {
+function Products(page, itemCls) {
   this.currPage = page;
   this.dataPath = ''; this.getDataPath();
   this.products = []; this.collectProducts();
+  this.itemCls = itemCls;
 }
 
 /** Метод render помещает сгенерированные блоки в место переданное 2-м аргументом
@@ -55,7 +56,7 @@ Products.prototype.singleProduct = function (item, type) {
 
   /** Генерируем необходимые блоки HTML **/
   var article = $('<article />', {
-    class: 'item',
+    class: this.itemCls,
     'data-product-id': item.id
   });
   var header = $('<header />');

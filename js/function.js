@@ -1,7 +1,7 @@
 /** Генерируем элемент корзины на основе того, что пользователь передвигал **/
-function generateBasketItem(ui) {
-  /** ui - то, что пользователь начал двигать **/
-  var drag = ui.draggable;
+function insertItemBasket(ui) {
+  /** ui - то, что пользователь хочет добавить **/
+  var drag = ui;
   var dragId = drag.attr('data-product-id');
   var basketItems = getBasketItems();
   var compare = false;
