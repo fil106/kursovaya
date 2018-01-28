@@ -212,6 +212,10 @@ input, select, button {
     border-bottom: 1px solid #e8e8e8;
 }
 
+.close_basket:hover {
+    cursor: pointer;
+}
+
 .curr_card .btn_add_tocard  {
     margin: 20px 0;
 }
