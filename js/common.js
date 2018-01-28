@@ -6,15 +6,22 @@ console.log('текущая страница:',loc,currPage);
 
 /** Далее все дейсвтия делаем только после полного построния DOM **/
 $(document).ready(function(){
+  /** Создаем экземпляр класса корзины **/
+  var basket = new Basket('curr_card');
+  /** отрисовываем корзину **/
+  basket.render('.profile');
+
+  /** Создаем экземпляр класса верхнего (горизонтального) меню **/
   var topMenu = new Menu(currPage);
+  /** отрисовываем меню **/
   topMenu.render('.nav_header');
 
-  if(currPage === 'product.html') {
+  if(currPage === 'product.html' || currPage === 'product.html#') {
 
     var products = new Products(currPage);
     products.render('catalog', '.items_catalog');
 
-  } else if(currPage === 'index.html' || currPage === '') {
+  } else if(currPage === 'index.html' || currPage === 'index.html#' || currPage === '') {
 
     var products = new Products(currPage);
     products.render('featured', '.featured');
@@ -84,8 +91,8 @@ $(document).ready(function(){
     }
   });
 
-  $('.close_curr_card').click(function () {
-    $(this).parent().parent().find(".curr_card").slideUp();
+  $('.close_basket').click(function () {
+    $(this).parent().parent().slideUp();
   });
 
   $(".profile_card").click(function(){
