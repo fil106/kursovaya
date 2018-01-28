@@ -135,7 +135,7 @@ $(document).ready(function(){
       /** убираем надпись "MOVE HERE GOODS" **/
       $(this).find('h3').remove();
       /** добавляем в корзину драгнутый товар =) **/
-      $(this).find('table tbody').append(generateCardItem(ui));
+      $(this).find('table tbody').append(generateBasketItem(ui));
 
       if($('.curr_card table tr').length > '3') {
         $('.curr_card table').css({
