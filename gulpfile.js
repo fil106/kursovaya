@@ -21,7 +21,9 @@ gulp.task('css', function() {
 });
 
 gulp.task('copyJquery', function () {
-  gulp.src('/bower_components/jquery/dist/jquery.min.js')
+  gulp.src('./bower_components/jquery/dist/jquery.min.js')
+    .pipe(gulp.dest(config.dist + '/js/'));
+  gulp.src('./bower_components/jquery-ui/jquery-ui.min.js')
     .pipe(gulp.dest(config.dist + '/js/'));
 });
 
