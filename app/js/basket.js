@@ -68,11 +68,8 @@ Basket.prototype.generateTableHtml = function () {
   this.tableHtml = $table;
 };
 
-/** Генерируем элемент корзины на основе того, что пользователь передвигал **/
+/** Генерируем элемент корзины на основе того, что пользователь передвигал и добавляем в корзину**/
 Basket.prototype.insertItemBasket = function (ui) {
-  /** Увеличиваем переменную countGoods **/
-  this.countGoods++;
-
   /** ui - то, что пользователь хочет добавить **/
   var drag = ui;
   var dragId = drag.attr('data-product-id');
@@ -89,6 +86,9 @@ Basket.prototype.insertItemBasket = function (ui) {
   if(compare) {
     /** Пока без увеличения количества товара **/
   } else {
+    /** Увеличиваем переменную countGoods **/
+    this.countGoods++;
+    this.renderCountGoods();
 
     var imgBlk = drag.find('.photo');
     var img = $('<img>', {
@@ -137,6 +137,36 @@ Basket.prototype.insertItemBasket = function (ui) {
   }
 };
 
+/** Удаляем товар из корзины **/
+Basket.prototype.deleteItemBasket = function (item) {
+  this.countGoods--;
+  this.renderCountGoods();
+
+  var cost = $('.curr_card_price').text().replace('1 x ', '');
+
+  refreshTotalPrice(cost, 'minus');
+
+  item.parent().parent().remove();
+
+  if($('.curr_card table tr').length <= '3') {
+    $('.curr_card table').css({
+      'display': 'table',
+      'height': 'auto',
+      'overflow': 'auto'
+    });
+  }
+};
+
 Basket.prototype.renderCountGoods = function () {
+
+  if(this.countGoods > 0) {
+
+    $('.basket_count').text(this.countGoods).show('bounce');
+
+  } else if(this.countGoods === 0) {
+
+    $('.basket_count').hide();
+
+  }
 
 };
