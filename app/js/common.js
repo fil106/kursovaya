@@ -99,20 +99,9 @@ $(document).ready(function(){
       $(this).parent().find(".curr_card").slideToggle();
   });
 
+  /** ЛОВИМ КЛИК, УДАЛЕНИЕ ТОВАРА **/
   $('.curr_card').on('click', '.delete_item', function () {
-    var cost = $('.curr_card_price').text().replace('1 x ', '');
-
-    refreshTotalPrice(cost, 'minus');
-
-    $(this).parent().parent().remove();
-
-    if($('.curr_card table tr').length <= '3') {
-      $('.curr_card table').css({
-        'display': 'table',
-        'height': 'auto',
-        'overflow': 'auto'
-      });
-    }
+    basket.deleteItemBasket($(this));
   });
 
   /** DRAG FEATURED GOODS **/
