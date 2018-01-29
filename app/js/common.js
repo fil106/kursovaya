@@ -82,7 +82,7 @@ $(document).ready(function(){
     }
   });
 
-  // при скроле вниз фиксируем карзину
+  // при скроле вниз фиксируем корзину
   $(document).scroll(function () {
     if($(document).scrollTop() > 70) {
       $('.arrow_up').hide();
@@ -140,7 +140,7 @@ $(document).ready(function(){
 
   /** ЛОВИМ КЛИК ПО ТОВАРУ И ДОБАВЛЯЕМ ЕГО В КОРЗИНУ **/
   $('.item').click(function(e){
-    e.preventDefault();
+    e.preventDefault(); //отменяем действие ссылки
 
     basket.insertItemBasket($(this));
 

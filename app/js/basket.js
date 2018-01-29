@@ -9,6 +9,9 @@ function Basket(cls) {
 
   /** Таблица с товарами **/
   this.tableHtml = ''; this.generateTableHtml();
+
+  /** Текущее кол-во товаров в корзине **/
+  this.countGoods = 0;
 }
 
 Basket.prototype.render = function (place) {
@@ -67,6 +70,9 @@ Basket.prototype.generateTableHtml = function () {
 
 /** Генерируем элемент корзины на основе того, что пользователь передвигал **/
 Basket.prototype.insertItemBasket = function (ui) {
+  /** Увеличиваем переменную countGoods **/
+  this.countGoods++;
+
   /** ui - то, что пользователь хочет добавить **/
   var drag = ui;
   var dragId = drag.attr('data-product-id');
@@ -129,4 +135,8 @@ Basket.prototype.insertItemBasket = function (ui) {
 
     $(this.tableHtml).insertBefore('.'+this.basketCls+' .'+this.basketPrice);
   }
+};
+
+Basket.prototype.renderCountGoods = function () {
+
 };
