@@ -221,12 +221,16 @@ input, select, button {
     height: 25px;
     width: 25px;
     border-radius: 50%;
-    background-color: red;
+    background-color: #f16d7f;
     color: white;
     text-align: center;
     font-size: 15px;
     font-weight: bold;
     line-height: 25px;
+    position: absolute;
+    top: -11px;
+    left: 18px;
+    display: none;
 }
 
 .curr_card .btn_add_tocard  {
@@ -260,6 +264,7 @@ input, select, button {
 
 .profile_card {
     display: inline-block;
+    position: relative;
     margin: 7px 15px 0 0;
 }
 
