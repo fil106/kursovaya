@@ -1,3 +1,4 @@
+var cookieBasketItemsId = [];
 /** Смотрим текущую страницу и далее передаем её в класс, где она обработается
  ** и вернет нам либо корневой каталог './', либо на каталог выше '../' **/
 var loc = document.location.href.split('/');
@@ -6,10 +7,13 @@ console.log('текущая страница:',loc,currPage);
 
 /** Далее все дейсвтия делаем только после полного построния DOM **/
 $(document).ready(function(){
-  /** Создаем экземпляр класса корзины **/
-  var basket = new Basket('curr_card');
-  /** отрисовываем корзину **/
-  basket.render('.profile');
+  /** Смотрим включены ли cookie **/
+  if (!navigator.cookieEnabled) {
+    alert( 'Включите cookie для комфортной работы с этим сайтом' );
+  } else {
+    cookieBasketItemsId = getCookie('basketItems').split(',');
+    console.log('Cookie',cookieBasketItemsId);
+  }
 
   /** Создаем экземпляр класса верхнего (горизонтального) меню **/
   var topMenu = new Menu(currPage);
@@ -18,16 +22,30 @@ $(document).ready(function(){
 
   if(currPage === 'product.html' || currPage === 'product.html#') {
 
-    var products = new Products(currPage, 'item');
+    var products = new Products(currPage, 'item', cookieBasketItemsId);
     products.render('catalog', '.items_catalog');
 
   } else if(currPage === 'index.html' || currPage === 'index.html#' || currPage === '') {
 
-    var products = new Products(currPage, 'item');
+    var products = new Products(currPage, 'item', cookieBasketItemsId);
     products.render('featured', '.featured');
 
   }
 
+  /** Создаем экземпляр класса корзины **/
+  var basket = new Basket('curr_card');
+  /** отрисовываем корзину **/
+  basket.render('.profile');
+  /** и отрисовываем если что-то было в куках **/
+  var $cookieItemsproducts = products.getCookieArticlesHtml().find('article');
+
+  for(var i=0; i < $cookieItemsproducts.length; i++) {
+    basket.insertItemBasket($cookieItemsproducts[i], 'cookie');
+  }
+
+
+
+  /** На странице product разворачиваем первое меню слева **/
   $(".menu_aside_active").parent().find(".menu_aside_under").slideDown(400);
 
   /** выпадающее меню ***/
@@ -91,18 +109,17 @@ $(document).ready(function(){
     }
   });
 
+  /** Закрываем корзину по клику **/
   $('.close_basket').click(function () {
     $(this).parent().parent().slideUp();
   });
 
+  /** Открываем корзину по клику **/
   $(".profile_card").click(function(){
       $(this).parent().find(".curr_card").slideToggle();
   });
 
-  /** ЛОВИМ КЛИК, УДАЛЕНИЕ ТОВАРА **/
-  $('.curr_card').on('click', '.delete_item', function () {
-    basket.deleteItemBasket($(this));
-  });
+
 
   /** DRAG FEATURED GOODS **/
   $('.item').draggable({
@@ -123,7 +140,8 @@ $(document).ready(function(){
   $('.curr_card').droppable({
     drop: function( event, ui ) {
       /** добавляем в корзину драгнутый товар =) **/
-      basket.insertItemBasket(ui.draggable);
+      basket.insertItemBasket(ui.draggable, 'default');
+      console.log(ui.draggable);
     }
   });
 
@@ -131,8 +149,13 @@ $(document).ready(function(){
   $('.item').click(function(e){
     e.preventDefault(); //отменяем действие ссылки
 
-    basket.insertItemBasket($(this));
+    basket.insertItemBasket($(this), 'default');
 
     $('.curr_card').show('bounce');
+  });
+
+  /** ЛОВИМ КЛИК, УДАЛЕНИЕ ТОВАРА **/
+  $('.curr_card').on('click', '.delete_item', function () {
+    basket.deleteItemBasket($(this));
   });
 });

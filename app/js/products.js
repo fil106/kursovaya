@@ -1,9 +1,11 @@
 /** Класс Products - глабольный класс для получения данных о товорах из JSON
  ** и вывода товаров на определенных страницах и местах **/
-function Products(page, itemCls) {
+function Products(page, itemCls, cookieBasket) {
   this.currPage = page;
   this.dataPath = ''; this.getDataPath();
   this.products = []; this.collectProducts();
+  this.cookieBasket = cookieBasket;
+  this.cookieArticlesHtml = $('<div />'); this.collectProductsFromCookie(this.cookieBasket);
   this.itemCls = itemCls;
 }
 
@@ -123,4 +125,28 @@ Products.prototype.collectProducts = function () {
     },
     context: this
   });
+};
+
+Products.prototype.collectProductsFromCookie = function (arrId) {
+
+  for(var i=0; i < this.products.length; i++) {
+
+    for(var j=0; j < arrId.length; j++) {
+
+      if(this.products[i].id === arrId[j]) {
+
+        this.cookieArticlesHtml.append(this.singleProduct(this.products[i]));
+
+      }
+
+    }
+
+  }
+
+  console.log(this.cookieArticlesHtml.find('article'));
+
+};
+
+Products.prototype.getCookieArticlesHtml = function () {
+  return this.cookieArticlesHtml
 };

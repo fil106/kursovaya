@@ -69,11 +69,22 @@ Basket.prototype.generateTableHtml = function () {
 };
 
 /** Генерируем элемент корзины на основе того, что пользователь передвигал и добавляем в корзину**/
-Basket.prototype.insertItemBasket = function (ui) {
-  /** ui - то, что пользователь хочет добавить **/
-  var drag = ui;
+Basket.prototype.insertItemBasket = function (ui, type) {
+
+  if(type === 'default') {
+
+    /** ui - то, что пользователь хочет добавить **/
+    var drag = ui;
+
+  } else if(type === 'cookie') {
+
+    /** ui - то, что пользователь хочет добавить **/
+    var drag = $(ui);
+
+  }
+
   var dragId = drag.attr('data-product-id');
-  var basketItems = getBasketItems();
+  var basketItems = this.getBasketItems();
   var compare = false;
 
   for(var i in basketItems) {
@@ -134,7 +145,11 @@ Basket.prototype.insertItemBasket = function (ui) {
     }
 
     $(this.tableHtml).insertBefore('.'+this.basketCls+' .'+this.basketPrice);
+
+    var currItems = this.getBasketItems();
+    setCookie('basketItems', (currItems != 0) ? currItems : null, null);
   }
+
 };
 
 /** Удаляем товар из корзины **/
@@ -169,4 +184,22 @@ Basket.prototype.renderCountGoods = function () {
 
   }
 
+};
+
+/** Возвращает массив текущих элементов корзины **/
+Basket.prototype.getBasketItems = function () {
+  var basketItems = $('.curr_card tr');
+
+  if(basketItems.length != 0) {
+    var arr = [];
+
+    for(var i=0; i<basketItems.length; i++) {
+      arr.push(basketItems[i].getAttribute('data-product-id'));
+      console.log(arr);
+    }
+
+    return arr;
+  } else {
+    return 0;
+  }
 };
