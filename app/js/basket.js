@@ -153,11 +153,22 @@ Basket.prototype.insertItemBasket = function (ui, type) {
 };
 
 /** Удаляем товар из корзины **/
-Basket.prototype.deleteItemBasket = function (item) {
+Basket.prototype.deleteItemBasket = function (item, currCookie) {
   this.countGoods--;
   this.renderCountGoods();
 
+  var cookie = currCookie;
   var cost = $('.curr_card_price').text().replace('1 x ', '');
+  var id = item.parent().parent().attr('data-product-id');
+  console.log('deleteCookie', cookie, id, currCookie);
+
+  for(var i=0; i < currCookie.length; i++) {
+    if(cookie[i] === id) {
+      cookie.splice(i, 1);
+    }
+  }
+
+  setCookie('basketItems', cookie, null);
 
   refreshTotalPrice(cost, 'minus');
 

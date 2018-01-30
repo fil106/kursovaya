@@ -7,12 +7,21 @@ console.log('текущая страница:',loc,currPage);
 
 /** Далее все дейсвтия делаем только после полного построния DOM **/
 $(document).ready(function(){
+
   /** Смотрим включены ли cookie **/
   if (!navigator.cookieEnabled) {
+
     alert( 'Включите cookie для комфортной работы с этим сайтом' );
+
   } else {
-    cookieBasketItemsId = getCookie('basketItems').split(',');
-    console.log('Cookie',cookieBasketItemsId);
+
+    if(getCookie('basketItems') != 'undefined') {
+
+      cookieBasketItemsId = getCookie('basketItems').split(',');
+      console.log('Cookie',cookieBasketItemsId);
+
+    }
+
   }
 
   /** Создаем экземпляр класса верхнего (горизонтального) меню **/
@@ -156,6 +165,6 @@ $(document).ready(function(){
 
   /** ЛОВИМ КЛИК, УДАЛЕНИЕ ТОВАРА **/
   $('.curr_card').on('click', '.delete_item', function () {
-    basket.deleteItemBasket($(this));
+    basket.deleteItemBasket($(this), getCookie('basketItems').split(','));
   });
 });
