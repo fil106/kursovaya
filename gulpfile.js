@@ -8,9 +8,11 @@ var config = {
   dist: './dist'
 };
 
+var mainJsName = 'common.js';
+
 gulp.task('js', function() {
   return gulp.src(config.app + '/js/*.js')
-    .pipe(concat('common.js'))
+    .pipe(concat(mainJsName))
     .pipe(gulp.dest(config.dist + '/js/'));
 });
 

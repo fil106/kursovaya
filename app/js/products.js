@@ -11,7 +11,7 @@ function Products(page, itemCls, cookieBasket) {
 
 /** Метод render помещает сгенерированные блоки в место переданное 2-м аргументом
  ** и в зависимости от типа (популярные ли это товары или обычный каталог) **/
-Products.prototype.render = function (type, place) {
+Products.prototype.render = function (type, place, quantity) {
 
   if(type === 'featured') {
 
@@ -25,7 +25,7 @@ Products.prototype.render = function (type, place) {
     var browseAllProducts = '<a href="html/product.html" class="btn_allproduct hvr-float-shadow">Browse All Product <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>';
 
     /** Изначально выводим неболее 8 товаров в популярные товары **/
-    var lenFeatured = (this.products.length > 8) ? 8 : this.products.length;
+    var lenFeatured = (this.products.length > quantity) ? quantity : this.products.length;
     for(var i=0; i < lenFeatured; i++) {
       itemsFeatured.append(this.singleProduct(this.products[i], type));
       console.log('обрабатываю:', this.products[i], type);
@@ -42,10 +42,19 @@ Products.prototype.render = function (type, place) {
     console.log(type,this.products);
 
     /** Изначально выводим неболее 9 товаров в блок каталога товаров **/
-    var lenCatalog = (this.products.length > 9) ? 9 : this.products.length;
+    var lenCatalog = (this.products.length > quantity) ? quantity : this.products.length;
     for(var j=0; j < lenCatalog; j++) {
       $(place).append(this.singleProduct(this.products[j], type));
       console.log('обрабатываю:', this.products[j], type);
+    }
+
+  } else if(type === 'random') {
+
+    /** Изначально выводим неболее 4 товаров в блок каталога товаров **/
+    var lenCatalog = (this.products.length > quantity) ? quantity : this.products.length;
+    for(var k=0; k < lenCatalog; k++) {
+      $(place).append(this.singleProduct(this.products[getRandomInt(0,9)], 'catalog'));
+      console.log('обрабатываю:', this.products[getRandomInt(0,9)], 'catalog');
     }
 
   }

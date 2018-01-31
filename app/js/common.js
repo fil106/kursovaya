@@ -15,10 +15,9 @@ $(document).ready(function(){
 
   } else {
 
-    if(getCookie('basketItems') != 'undefined') {
+    if(typeof getCookie('basketItems') !== 'undefined') {
 
       cookieBasketItemsId = getCookie('basketItems').split(',');
-      console.log('Cookie',cookieBasketItemsId);
 
     }
 
@@ -32,12 +31,17 @@ $(document).ready(function(){
   if(currPage === 'product.html' || currPage === 'product.html#') {
 
     var products = new Products(currPage, 'item', cookieBasketItemsId);
-    products.render('catalog', '.items_catalog');
+    products.render('catalog', '.items_catalog', 9);
 
   } else if(currPage === 'index.html' || currPage === 'index.html#' || currPage === '') {
 
     var products = new Products(currPage, 'item', cookieBasketItemsId);
-    products.render('featured', '.featured');
+    products.render('featured', '.featured', 8);
+
+  } else {
+
+    var products = new Products(currPage, 'item', cookieBasketItemsId);
+    products.render('random', '.items_catalog', 4);
 
   }
 
